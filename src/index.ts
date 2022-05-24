@@ -40,8 +40,22 @@ async function starryNightHandler(request: Request): Promise<Response> {
   }
   const tree = starryNight.highlight(source, scope)
   console.log('1. created tree')
+
+  let html = toHtml(tree);
+
+  if (url.searchParams.has('theme')) {
+    html = [
+      `<!doctype html><meta charset=utf-8>`,
+      `<link rel=stylesheet href="https://cdn.jsdelivr.net/gh/wooorm/starry-night@1.0.1/style/dark.css">`,
+      `<script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>`,
+      `<body class="p-8 bg-gray-900">`,
+      `<main class="mx-auto prose prose-invert md:prose-lg">`,
+      `<pre><code>${html}</code></pre>`,
+      `</main>`,
+    ].join("\n")
+  }
   // context.waitUntil(new Promise(resolve => setTimeout(resolve, 1000)))
-  return new Response(toHtml(tree))
+  return new Response(html, { headers: { "content-type": "text/html" }})
 }
 
 export class StarryNightDurableObject {
