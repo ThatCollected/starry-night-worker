@@ -8,7 +8,8 @@
  * Learn more at https://developers.cloudflare.com/workers/
  */
 
-import { importStarryNight } from "./starryNight"
+import {importStarryNight} from './starryNight'
+import {toHtml} from 'hast-util-to-html'
 
 // import {grammars as all} from '../lib/all.js'
 // import {grammars as common} from '../lib/common.js'
@@ -23,14 +24,24 @@ import { importStarryNight } from "./starryNight"
 async function starryNightHandler(request: Request): Promise<Response> {
   // const {importStarryNight} = await import('./starryNight')
   // const starryNight = await createStarryNight(common)
-  console.log("0. creating starry night")
+  const url = new URL(request.url)
+  const lang = url.searchParams.get('lang') ?? 'markdown';
+  const source =
+    request.method.toUpperCase() === 'GET'
+      ? url.searchParams.get('source') ?? ''
+      : await request.text()
+
+  console.log('0. creating starry night')
   const starryNight = await importStarryNight()
-  console.log("1. created starry night")
-  const scope = starryNight.flagToScope('markdown')!
-  const tree = starryNight.highlight('# hi', scope)
-  console.log("1. created tree")
+  console.log('1. created starry night')
+  const scope = starryNight.flagToScope(lang)
+  if (scope == null) {
+    return new Response(`Unknown language ${lang}`, { status: 400 })
+  }
+  const tree = starryNight.highlight(source, scope)
+  console.log('1. created tree')
   // context.waitUntil(new Promise(resolve => setTimeout(resolve, 1000)))
-  return new Response(JSON.stringify(tree, null, 2))
+  return new Response(toHtml(tree))
 }
 
 export class StarryNightDurableObject {
@@ -44,9 +55,9 @@ export class StarryNightDurableObject {
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
-    const id = env.StarryNightDurableObject.idFromName("shared");
-    const starryNight = env.StarryNightDurableObject.get(id);
-    return await starryNight.fetch(request);
+    const id = env.StarryNightDurableObject.idFromName('shared')
+    const starryNight = env.StarryNightDurableObject.get(id)
+    return await starryNight.fetch(request)
   }
 }
 
