@@ -10,7 +10,6 @@
 [![Build][build-badge]][build]
 [![Coverage][coverage-badge]][coverage]
 [![Downloads][downloads-badge]][downloads]
-[![Size][size-badge]][size]
 
 Syntax highlighting, like what GitHub uses to highlight code, but free and open
 source and JavaScript!
@@ -1167,7 +1166,7 @@ interfaces.
 ## Compatibility
 
 This package is at least compatible with all maintained versions of Node.js.
-As of now, that is Node.js 12.20+, 14.14+, 16.0+, and 18.0+.
+As of now, that is Node.js 14.14+, 16.0+, and 18.0+.
 It also works in Deno and modern browsers.
 
 You can pass your own TextMate grammars, provided that they work with
@@ -1216,10 +1215,6 @@ All other files [MIT][license] © [Titus Wormer][author]
 [downloads-badge]: https://img.shields.io/npm/dm/@wooorm/starry-night.svg
 
 [downloads]: https://www.npmjs.com/package/@wooorm/starry-night
-
-[size-badge]: https://img.shields.io/bundlephobia/minzip/@wooorm/starry-night.svg
-
-[size]: https://bundlephobia.com/result?p=@wooorm/starry-night
 
 [npm]: https://docs.npmjs.com/cli/install
 
