@@ -9,3 +9,7 @@ name = "StarryNightDurableObject"
 # The exported class name of the Durable Object
 class_name = "StarryNightDurableObject"
 # The script where the Durable Object is defined (if it is external to this Worker)
+
+[[migrations]]
+tag = "v1" # Should be unique for each entry
+new_classes = ["StarryNightDurableObject"] # Array of new classes
